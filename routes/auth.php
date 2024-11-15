@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\GoogleController;
 use Livewire\Volt\Volt;
 
 Route::middleware('guest')->group(function () {
@@ -16,6 +17,9 @@ Route::middleware('guest')->group(function () {
 
     Volt::route('reset-password/{token}', 'pages.auth.reset-password')
         ->name('password.reset');
+
+        Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+        Route::get('callback/google', [GoogleController::class, 'handleCallback']);  
 });
 
 Route::middleware('auth')->group(function () {

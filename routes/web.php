@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\GoogleController;
+
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('callback/google', [GoogleController::class, 'handleCallback']);  
 
 Route::view('/', 'welcome');
 
