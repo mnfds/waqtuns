@@ -16,21 +16,21 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            <livewire:layout.navigation />
-
+            <livewire:layout.navbar />
             <!-- Page Heading -->
-            @if (isset($header))
+            {{-- @if (isset($header))
                 <header class="bg-white shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
-            @endif
+            @endif --}}
 
             <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     </body>
 </html>

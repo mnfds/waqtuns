@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\GoogleController;
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('callback/google', [GoogleController::class, 'handleCallback']);  
 
-Route::view('/', 'welcome');
+Route::view('/', 'dashboard');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
