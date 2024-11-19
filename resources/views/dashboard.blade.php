@@ -15,5 +15,6 @@
         </div>
     </div> --}}
     <livewire:layout.hero />
+    <livewire:layout.produk-random />
 
 </x-app-layout>
