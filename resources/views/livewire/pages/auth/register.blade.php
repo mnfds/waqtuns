@@ -11,6 +11,9 @@ use Livewire\Volt\Component;
 new #[Layout('layouts.guest')] class extends Component
 {
     public string $name = '';
+    public string $alamat = '';
+    public string $role = 'user';
+    public ?int $nomor = null;
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
@@ -22,6 +25,9 @@ new #[Layout('layouts.guest')] class extends Component
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
+            'alamat' => ['required', 'string', 'max:255'],
+            'nomor' => ['required', 'integer'],
+            'role' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -43,6 +49,20 @@ new #[Layout('layouts.guest')] class extends Component
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input wire:model="name" id="name" class="block mt-1 w-full" type="text" name="name" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <!-- Alamat -->
+        <div>
+            <x-input-label for="alamat" :value="__('Alamat')" />
+            <x-text-input wire:model="alamat" id="alamat" class="block mt-1 w-full" type="text" name="alamat" required autofocus autocomplete="alamat" />
+            <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
+        </div>
+
+        <!-- nomor -->
+        <div>
+            <x-input-label for="nomor" :value="__('Nomor Telepon/Whatsapp')" />
+            <x-text-input wire:model="nomor" id="nomor" class="block mt-1 w-full" type="number" name="nomor" required autofocus autocomplete="nomor" />
+            <x-input-error :messages="$errors->get('nomor')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

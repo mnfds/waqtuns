@@ -1,5 +1,5 @@
 <div>
-<div class="bg-white bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')]">
+<div class="bg-white pattern">
     <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 z-10 relative">
         <a href="#" class="inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full">
             <span class="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">New</span> <span class="text-sm font-medium">Jumbotron component was launched! See what's new</span> 
@@ -20,4 +20,5 @@
     </div>
     <div class="bg-gradient-to-b from-blue-50 to-transparent  w-full h-full relative top-0 left-0 z-0"></div>
 </div>
+
 </div>

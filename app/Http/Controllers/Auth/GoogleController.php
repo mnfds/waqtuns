@@ -40,6 +40,9 @@ class GoogleController extends Controller
                 // create user data with their Google account data
                 $newUser = User::create([
                     'name' => $user->name,
+                    'alamat' => '-',
+                    'nomor' => 0,
+                    'role' => 'user',
                     'email' => $user->email,
                     'social_id' => $user->id,
                     'social_type' => 'google',  // the social login is using google
