@@ -16,6 +16,7 @@
     </div> --}}
     <livewire:layout.hero />
     <livewire:layout.card-info />
+    <livewire:layout.shop-category />
     <livewire:layout.produk-random />
 
 </x-app-layout>
