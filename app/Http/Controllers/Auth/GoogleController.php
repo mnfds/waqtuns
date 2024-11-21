@@ -8,56 +8,58 @@ use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 class GoogleController extends Controller
 {
     public function redirectToGoogle()
     {
-        // redirect user to "login with Google account" page
         return Socialite::driver('google')->redirect();
     }
-
+    
     public function handleCallback()
     {
         try {
-            // get user data from Google
-            $user = Socialite::driver('google')->user();
+            // Dapatkan detail pengguna dari Google
+            $googleUser = Socialite::driver('google')->user();
+    
+            // Cari pengguna berdasarkan email
+            $existingUser = User::where('email', $googleUser->email)->first();
+    
+            if ($existingUser) {
+                // Jika email sudah ada, perbarui provider_id (jika perlu)
+                $existingUser->update([
+                    'social_type' => 'google',
+                    'social_id' => $googleUser->id,
+                ]);
+    
+                // Login pengguna
+                Auth::login($existingUser);
 
-            // find user in the database where the social id is the same with the id provided by Google
-            $finduser = User::where('social_id', $user->id)->first();
-
-            if ($finduser)  // if user found then do this
-            {
-                // Log the user in
-                Auth::login($finduser);
-
-                // redirect user to dashboard page
                 return redirect('/dashboard');
-            }
-            else
-            {
-                // if user not found then this is the first time he/she try to login with Google account
-                // create user data with their Google account data
+            } else {
+                $password = Str::random(10);
+                // Jika email belum ada, buat akun baru
                 $newUser = User::create([
-                    'name' => $user->name,
+                    'name' => $googleUser->name,
                     'alamat' => '-',
                     'nomor' => 0,
                     'role' => 'user',
-                    'email' => $user->email,
-                    'social_id' => $user->id,
-                    'social_type' => 'google',  // the social login is using google
-                    'password' => bcrypt('my-google'),  // fill password by whatever pattern you choose
+                    'email' => $googleUser->email,
+                    'social_id' => $googleUser->id,
+                    'social_type' => 'google',
+                    'password' => bcrypt($password), // Password default untuk akun Google
                 ]);
-
+    
+                // Login pengguna
                 Auth::login($newUser);
-
-                return redirect('/dashboard');
             }
-
-        }
-        catch (Exception $e)
-        {
-            dd($e->getMessage());
+    
+                return redirect('/dashboard'); // Redirect ke halaman dashboard
+            }
+            catch (\Exception $e) {
+            return redirect('/login')->withErrors('Gagal login menggunakan Google.');
         }
     }
+    
 }

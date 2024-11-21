@@ -23,8 +23,11 @@ new #[Layout('layouts.guest')] class extends Component
             'password' => $this->password,
         ])) {
             throw ValidationException::withMessages([
-                'password' => __('auth.password'),
+                'password' => __('Password yang Anda masukkan salah.'),
             ]);
+            // throw ValidationException::withMessages([
+            //     'password' => __('auth.password'),
+            // ]);
         }
 
         session(['auth.password_confirmed_at' => time()]);
@@ -35,7 +38,7 @@ new #[Layout('layouts.guest')] class extends Component
 
 <div>
     <div class="mb-4 text-sm text-gray-600">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+        {{ __('Ini adalah bagian yang dilindungi dalam aplikasi. Mohon konfirmasi Password Anda untuk melanjutkan.') }}
     </div>
 
     <form wire:submit="confirmPassword">

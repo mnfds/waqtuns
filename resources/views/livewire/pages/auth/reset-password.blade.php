@@ -63,7 +63,8 @@ new #[Layout('layouts.guest')] class extends Component
             return;
         }
 
-        Session::flash('status', __($status));
+        // Session::flash('status', __($status));
+        Session::flash('status', 'Password Anda telah berhasil diperbarui. Silakan masuk dengan password baru Anda.');
 
         $this->redirectRoute('login', navigate: true);
     }
