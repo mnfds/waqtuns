@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('deskripsi');
             $table->integer('stok');
             $table->string('image');
-            $table->string('kategori');
+            $table->foreignId('id_kategori');
             $table->timestamps();
         });
     }
