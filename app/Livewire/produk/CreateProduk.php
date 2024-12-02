@@ -13,7 +13,7 @@ class CreateProduk extends Component
     use WithFileUploads;
     #[Validate('max:10240')] 
 
-    public $nama_produk,$harga,$deskripsi,$stok,$image,$id_kategori;
+    public $nama_produk,$harga,$deskripsi,$stok,$image,$status,$id_kategori;
     public $imageName;
 
     public function create(): void {
@@ -22,6 +22,7 @@ class CreateProduk extends Component
             'harga' => ['required'],
             'deskripsi' => ['required'],
             'stok' => ['required','integer'],
+            'status' => ['required'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:5120'],
             'id_kategori' => ['required'],
         ]);
@@ -38,6 +39,7 @@ class CreateProduk extends Component
             'harga' => $this->harga,
             'deskripsi' => $this->deskripsi,
             'stok' => $this->stok,
+            'status' => $this->status,
             'image' => $imageName,
             'id_kategori' => $this->id_kategori,
         ]);

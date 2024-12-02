@@ -2,25 +2,65 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Middleware\admin;
+use App\Http\Middleware\pengunjung;
 
-Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
-Route::get('callback/google', [GoogleController::class, 'handleCallback']);  
-
-Route::view('/', 'dashboard');
-
-Route::view('/produk', 'user.produk')->name('user.produk');
 
 Route::view('dashboard', 'dashboard')
 ->middleware(['auth', 'verified'])
 ->name('dashboard');
 
-
 Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+->middleware(['auth'])
+->name('profile');
 
-Route::middleware(['auth'])->group(function () {
-    Route::view('/keranjang', 'user.keranjang')->name('user.keranjang');
+/*
+|--------------------------------------------------------------------------
+| ================= GUEST / PUBLIC ROUTE ================= 
+|--------------------------------------------------------------------------
+*/
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('callback/google', [GoogleController::class, 'handleCallback']);  
+Route::view('/', 'dashboard');
+
+
+Route::view('/produk', 'produk.data-produk')->name('produk.data');
+Route::view('/produk-detail', 'produk.detail-produk')->name('produk.detail');
+
+
+Route::middleware(['auth'])->group(function () {   
+/*
+|--------------------------------------------------------------------------
+| ================= PENGUNJUNG ROUTE ================= 
+|--------------------------------------------------------------------------
+*/
+
+    Route::middleware([pengunjung::class])->group(function () {
+
+        Route::view('/keranjang', 'user.keranjang')->name('user.keranjang');
+
+    });
+
+/*
+|--------------------------------------------------------------------------
+| ================= ADMIN ROUTE ================= 
+|--------------------------------------------------------------------------
+*/
+
+    Route::middleware([admin::class])->group(function () {
+
+        // ==== Kategori ADMIN ==== //
+        Route::view('/data-kategori', 'kategori.data-kategori')->name('kategori.data');
+        Route::view('/create-kategori', 'kategori.create-kategori')->name('kategori.create');
+        Route::view('/update-kategori/{id}', 'kategori.update-kategori')->name('kategori.update');
+    
+        // ==== Produk ADMIN ==== //
+        Route::view('/produk-create', 'produk.create-produk')->name('produk.create');
+        Route::view('/produk-update', 'produk.update-produk')->name('produk.update');
+    });
+
+
+
 });
 
 require __DIR__.'/auth.php';

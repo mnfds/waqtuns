@@ -13,7 +13,7 @@ class UpdateProduk extends Component
     use WithFileUploads;
     #[Validate('max:10240')] 
 
-    public $nama,$harga,$deskripsi,$stok,$image,$id_kategori;
+    public $nama,$harga,$deskripsi,$stok,$image,$id_kategori,$status;
     public $cekImage;
     public $id;
     // public $id = Produk::findorFail($id);
@@ -29,6 +29,7 @@ class UpdateProduk extends Component
         $this->stok = $produk->stok;
         $this->image = $produk->image;
         $this->id_kategori = $produk->id_kategori;
+        $this->status = $produk->status;
        
     }
 
@@ -40,6 +41,7 @@ class UpdateProduk extends Component
             'harga' => ['required'],
             'deskripsi' => ['required'],
             'stok' => ['required','integer'],
+            'status' => ['required'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:5120'],
             'id_kategori' => ['required'],
         ]);
@@ -58,6 +60,7 @@ class UpdateProduk extends Component
             'harga' => $this->harga,
             'deskripsi' => $this->deskripsi,
             'stok' => $this->stok,
+            'status' => $this->status,
             'image' => $imageName,
         ]);
 

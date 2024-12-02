@@ -24,7 +24,7 @@
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link href="{{ route('user.produk') }}" :active="request()->routeIs('user.produk')" wire:navigate>
+                        <x-nav-link href="{{ route('produk.data') }}" :active="request()->routeIs('produk.data')" wire:navigate>
                             Produk
                         </x-nav-link>
                     </li>

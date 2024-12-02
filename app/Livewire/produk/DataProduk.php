@@ -3,17 +3,23 @@
 namespace App\Livewire\Produk;
 
 use App\Models\produk;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class DataProduk extends Component
 {
-    public $produks,$data;
+    public $produks;
+    public $data;
 
-    public function mount(): void
-    {
-        $this->produks = $this->produks;
+    public function mount(): void {
+
+        $this->produks = Auth::check()
+        ? (Auth::user()->role === 'admin' 
+            ? produk::latest()->get() : produk::where('status', 'aktif')->latest()->get())
+        : produk::where('status', 'aktif')->latest()->get();
     }
+
     public function hapusProduk($id): void
     {
         $produk = Produk::findOrFail($id);
