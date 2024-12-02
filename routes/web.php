@@ -25,7 +25,7 @@ Route::view('/', 'dashboard');
 
 
 Route::view('/produk', 'produk.data-produk')->name('produk.data');
-Route::view('/produk-detail', 'produk.detail-produk')->name('produk.detail');
+Route::view('/produk-detail/{id}', 'produk.detail-produk')->name('produk.detail');
 
 
 Route::middleware(['auth'])->group(function () {   
