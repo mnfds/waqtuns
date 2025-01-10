@@ -12,7 +12,8 @@
                     name: '{{ $r->nama_produk }}',
                     description: '{{ $r->deskripsi }}',
                     id_produk: '{{ $r->id }}',
-                    price: 'Rp. {{ $r->harga }}',
+                    price: 'Rp. {{ number_format($r->harga, 0, ',', '.') }}',
+                    kategori: '{{ $r->kategoris->nama }}',
                 },
             @endforeach
         ],
@@ -37,7 +38,8 @@
                                 <img :src="product.img" alt="Product" class="h-80 w-full object-cover rounded-t-xl" />
                                 <div class="px-4 py-3">
                                     <h2 class="text-lg font-bold text-black truncate" x-text="product.name"></h2>
-                                    <p class="text-gray-400 text-xs uppercase" x-text="product.description"></p>
+                                    <span class="bg-blue-200 text-blue-600 text-xs uppercase p-1 rounded" x-text="product.kategori"></span>
+                                    <p class="text-gray-400 text-xs uppercase mt-2" x-text="product.description"></p>
                                     <p class="text-lg font-semibold text-black my-3" x-text="product.price"></p>
                                 </div>
                             </a>

@@ -2,35 +2,57 @@
 
 namespace App\Livewire\Produk;
 
-use App\Models\produk;
+use App\Models\Produk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Livewire\WithPagination;
 use Livewire\Component;
 
 class DataProduk extends Component
 {
-    public $produks;
+    use WithPagination;
+
     public $data;
 
-    public function mount(): void {
+    protected $paginationTheme = 'paginate';
 
-        $this->produks = Auth::check()
-        ? (Auth::user()->role === 'admin' 
-            ? produk::latest()->get() : produk::where('status', 'aktif')->latest()->get())
-        : produk::where('status', 'aktif')->latest()->get();
+    public function mount(): void
+    {
+        // Tidak perlu memproses paginasi di sini
+        $this->data = Auth::user(); // Simpan data pengguna untuk referensi
     }
 
     public function hapusProduk($id): void
     {
         $produk = Produk::findOrFail($id);
+
+        // Hapus gambar dari storage jika ada
         if ($produk->image) {
             Storage::disk('public')->delete($produk->image);
         }
 
         $produk->delete();
-        if ($this->data->role === 'admin') {
-            $this->produks = Produk::latest()->get();
-        }
-        $this->dispatch('alert-success', message: 'Produk berhasil dihapus.');
+
+        // Kirim notifikasi ke pengguna
+        $this->dispatchBrowserEvent('alert-success', ['message' => 'Produk berhasil dihapus.']);
     }
+
+    public function render()
+    {
+        $produks = Produk::query();
+    
+        // Filter berdasarkan role user
+        if (Auth::check()) {
+            if (Auth::user()->role !== 'admin') {
+                $produks = $produks->where('status', 'aktif');
+            }
+        } else {
+            $produks = $produks->where('status', 'aktif');
+        }
+    
+        return view('livewire.produk.data-produk', [
+            'produks' => $produks->latest()->paginate(8),
+        ]);
+    }
+    
 }

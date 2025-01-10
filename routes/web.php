@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
 */
 
     Route::middleware([admin::class])->group(function () {
+        // ==== DASHBOARD ADMIN ==== //
+        Route::view('/home', 'home');
 
         // ==== Kategori ADMIN ==== //
         Route::view('/data-kategori', 'kategori.data-kategori')->name('kategori.data');

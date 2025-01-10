@@ -1,8 +1,8 @@
 <div class="p-5 bg-white">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <!-- Product Image Section -->
-        <div>
-            <img src="{{$data->image}}" alt="product" class="w-full h-auto rounded-lg shadow-lg object-cover">
+        <div class="flex justify-center items-center">
+            <img src="{{$data->image}}" alt="product" class="w-[600px] h-auto rounded-lg shadow-lg object-cover">
         </div>
 
         <!-- Product Details Section -->

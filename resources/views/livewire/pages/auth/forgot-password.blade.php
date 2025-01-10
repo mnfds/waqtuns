@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Password;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use App\Notifications\ResetPasswordNotification;
 
-new #[Layout('layouts.guest')] class extends Component
-{
+new #[Layout('layouts.guest')] class extends Component {
     public string $email = '';
 
     /**
@@ -17,23 +17,31 @@ new #[Layout('layouts.guest')] class extends Component
             'email' => ['required', 'string', 'email'],
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $this->only('email')
-        );
+        // Temukan pengguna berdasarkan email
+        $user = \App\Models\User::where('email', $this->email)->first();
 
-        if ($status != Password::RESET_LINK_SENT) {
-            // $this->addError('email', __($status));
+        if (!$user) {
             $this->addError('email', 'Kami tidak dapat menemukan pengguna dengan alamat email tersebut.');
-
             return;
         }
 
-        $this->reset('email');
+        // Buat token reset password
+        $token = Str::random(64);
 
-        // session()->flash('status', __($status));
+        // Simpan token di tabel password_resets
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $this->email],
+            [
+                'email' => $this->email,
+                'token' => bcrypt($token),
+                'created_at' => now(),
+            ],
+        );
+
+        // Kirim notifikasi kustom
+        $user->notify(new ResetPasswordNotification($this->email));
+
+        $this->reset('email');
         session()->flash('status', 'Kami telah mengirimkan tautan reset password ke email Anda.');
     }
 }; ?>
@@ -50,7 +58,8 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus />
+            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required
+                autofocus />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 

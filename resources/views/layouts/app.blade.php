@@ -30,7 +30,16 @@
             <main>
                 {{ $slot }}
             </main>
+                {{-- Untuk semua pengguna yang login --}}
+                @auth
+                @if (Auth::user()->role === 'user')
+                <livewire:layout.footer />
+                @endif
+            @endauth
+            {{-- Jika pengguna adalah guest (tidak login) --}}
+            @guest
             <livewire:layout.footer />
+            @endguest
         </div>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         {{-- <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script> --}}
